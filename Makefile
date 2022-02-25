@@ -6,7 +6,7 @@
 #    By: vess <vess@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/01 05:31:56 by lzaccome          #+#    #+#              #
-#    Updated: 2022/02/23 00:09:47 by vess             ###   ########.fr        #
+#    Updated: 2022/02/25 15:52:40 by vess             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ CFLAGS =  -Wall -Wextra -Werror -g3
 DEPS = $(SRCS:.c=.d)
 
 SRCS =	main.c \
+		utils.c 
+
 		
 
 
