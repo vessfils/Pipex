@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vess <vess@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/22 22:38:31 by vess              #+#    #+#             */
-/*   Updated: 2022/02/27 23:31:49 by vess             ###   ########.fr       */
+/*   Created: 2022/02/28 21:51:06 by vess              #+#    #+#             */
+/*   Updated: 2022/02/28 23:20:37 by vess             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,34 +35,40 @@ char	*get_path(char *cmd, char **env)
 {
 	int		i;
 	char	*path;
-	char	**dir;
+	char	*dir;
+	char	*file;
 
 	i = 0;
 	while (env[i] && ft_strncmp(env[i], "PATH=", 5) != 0)
 		i++;
 	path = env[i] + 5;
-	dir = ft_split(path, ':');
-	i = 0;
-	while (dir[i])
+	while (*path && (ft_strichr(path, ':') > -1))
 	{
-		printf("%s\n", dir[i]);
-		if (access(dir[i], X_OK))
-			return (dir[i]);
-		i++;
+		dir = ft_strndup(path, ft_strichr(path, ':'));
+		file = ft_joinpath(dir, cmd);
+		free(dir);
+		if (access(file, X_OK) == 0)
+			return (file);
+		free(file);
+		path += ft_strichr(path, ':') + 1;
 	}
 	return (cmd);
 }
 
-/*
-void exec_cmd()
+void	exec_cmd(char *cmd, char **env)
 {
+	char	**args;
+	char	*path;
 
-
-
-
+	args = ft_split(cmd, ' ');
+	if (ft_strichr(args[0], '/') > -1)
+		path = args[0];
+	else
+		path = get_path(cmd, env);
+	execve(path, args, env);
 }
 
-void	redirection(void)
+void	redirection(char **av,char **env)
 {
 	int		fd[2];
 	pid_t	pid1;
@@ -79,7 +85,7 @@ void	redirection(void)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
 		close(fd[1]);
-		execlp("ls", "ls", NULL);
+		exec_cmd(av[2], env);
 	}
 	pid2 = fork();
 	if (pid2 < 0)
@@ -89,31 +95,26 @@ void	redirection(void)
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
 		close(fd[1]);
-		execlp("grep", "grep", "main", NULL);
+		exec_cmd(av[3], env);
 	}
 	close(fd[0]);
 	close(fd[1]);
 	waitpid(pid1, &status, 0);
 	waitpid(pid2, &status, 0);
 }
-*/
+
 int	main(int ac, char **av, char **env)
 {
-	//int	fd[2];
-	char	*binaryPath = "/bin/ls";
-	char	*args[] = {binaryPath, "ls", NULL};
+	int	fd[2];
+	int	i;
 
-/*
-	if (ac == 5)
+	i = 1;
+
+	if (ac == 4)
 	{
 		fd[0] = open_file(av[1], O_RDONLY);
 		fd[1] = open_file(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC);
-
+		redirection(av, env);
 	}
-*/
-	//execve(binaryPath, args, env);
-	//printf("%s\n", get_path(env));
-	//redirection();
-	get_path("ls", env);
 	return (0);
 }
