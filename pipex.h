@@ -6,7 +6,7 @@
 /*   By: vess <vess@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 22:55:22 by vess              #+#    #+#             */
-/*   Updated: 2022/02/28 21:54:43 by vess             ###   ########.fr       */
+/*   Updated: 2022/03/01 23:06:37 by vess             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@
 # include <errno.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+
+# define INFILE 0
+# define OUTFILE 1
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
 
 int		ft_strncmp(const char *s1, const char *s2, unsigned int n);
 char	**ft_split(char const *s, char c);

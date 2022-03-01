@@ -6,12 +6,12 @@
 /*   By: vess <vess@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 21:51:06 by vess              #+#    #+#             */
-/*   Updated: 2022/02/28 23:20:37 by vess             ###   ########.fr       */
+/*   Updated: 2022/03/01 23:10:52 by vess             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
+/*
 int	open_file(char *file, int flag)
 {
 	int	fd;
@@ -23,6 +23,23 @@ int	open_file(char *file, int flag)
 		exit(1);
 	}
 	return (fd);
+}
+*/
+int	open_file(char *filename, int mode)
+{
+	if (mode == INFILE)
+	{
+		if (access(filename, F_OK))
+		{
+			write(STDERR, "pipex: ", 7);
+			write(STDERR, filename, ft_strichr(filename, 0));
+			write(STDERR, ": No such file or directory\n", 28);
+			return (STDIN);
+		}
+		return (open(filename, O_RDONLY));
+	}
+	else
+		return (open(filename, O_CREAT | O_WRONLY | O_TRUNC));
 }
 
 void	error(const char *msg)
@@ -47,7 +64,7 @@ char	*get_path(char *cmd, char **env)
 		dir = ft_strndup(path, ft_strichr(path, ':'));
 		file = ft_joinpath(dir, cmd);
 		free(dir);
-		if (access(file, X_OK) == 0)
+		if (access(file, F_OK) == 0)
 			return (file);
 		free(file);
 		path += ft_strichr(path, ':') + 1;
@@ -64,7 +81,7 @@ void	exec_cmd(char *cmd, char **env)
 	if (ft_strichr(args[0], '/') > -1)
 		path = args[0];
 	else
-		path = get_path(cmd, env);
+		path = get_path(args[0], env);
 	execve(path, args, env);
 }
 
@@ -82,7 +99,7 @@ void	redirection(char **av,char **env)
 		error("Fork : ");
 	if (pid1 == 0)
 	{	
-		dup2(fd[1], STDOUT_FILENO);
+		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
 		close(fd[1]);
 		exec_cmd(av[2], env);
@@ -92,7 +109,7 @@ void	redirection(char **av,char **env)
 		error("Fork : ");
 	if (pid2 == 0)
 	{
-		dup2(fd[0], STDIN_FILENO);
+		dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
 		close(fd[1]);
 		exec_cmd(av[3], env);
@@ -105,16 +122,17 @@ void	redirection(char **av,char **env)
 
 int	main(int ac, char **av, char **env)
 {
-	int	fd[2];
-	int	i;
+	int	fdfile[2];
 
-	i = 1;
-
-	if (ac == 4)
+	if (ac == 5)
 	{
-		fd[0] = open_file(av[1], O_RDONLY);
-		fd[1] = open_file(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC);
+		fdfile[0] = open_file(av[1], INFILE);
+		fdfile[1] = open_file(av[ac - 1], OUTFILE);
+		dup2(fdfile[0], STDIN_FILENO);
+		dup2(fdfile[1], STDOUT_FILENO);
 		redirection(av, env);
+		close(fdfile[0]);
+		close(fdfile[1]);
 	}
 	return (0);
 }

@@ -1,2 +1,14 @@
-
-
+infile.c
+main.c
+main.d
+main.o
+Makefile
+outfile.c
+pipex
+pipex.h
+pipexMedic
+pipex-tester
+pipex_tester_42
+utils.c
+utils.d
+utils.o
