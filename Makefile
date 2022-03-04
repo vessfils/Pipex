@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vess <vess@student.42.fr>                  +#+  +:+       +#+         #
+#    By: jcampagn <jcampagn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/01 05:31:56 by lzaccome          #+#    #+#              #
-#    Updated: 2022/02/25 15:52:40 by vess             ###   ########.fr        #
+#    Updated: 2022/03/03 14:40:25 by jcampagn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,9 @@ CFLAGS =  -Wall -Wextra -Werror -g3
 DEPS = $(SRCS:.c=.d)
 
 SRCS =	main.c \
-		utils.c 
+		utils.c \
+		utils2.c \
+		error.c
 
 		
 
