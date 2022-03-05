@@ -6,7 +6,7 @@
 #    By: jcampagn <jcampagn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/01 05:31:56 by lzaccome          #+#    #+#              #
-#    Updated: 2022/03/03 14:40:25 by jcampagn         ###   ########.fr        #
+#    Updated: 2022/03/05 15:49:43 by jcampagn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,10 @@ DEPS = $(SRCS:.c=.d)
 SRCS =	main.c \
 		utils.c \
 		utils2.c \
-		error.c
+		error.c \
+		here_doc.c \
+		get_next_line.c \
+		get_next_line_utils.c 
 
 		
 

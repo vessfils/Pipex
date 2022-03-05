@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vess <vess@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jcampagn <jcampagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 21:51:06 by vess              #+#    #+#             */
-/*   Updated: 2022/03/04 21:56:50 by vess             ###   ########.fr       */
+/*   Updated: 2022/03/05 14:53:30 by jcampagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	open_file(char *file, int flag)
 	int	fd;
 
 	fd = open(file, flag, 0644);
-	if (fd < 0)
+	if (fd == -1)
 	{
 		perror("Error Open: ");
 		exit(1);
@@ -103,20 +103,25 @@ int	main(int ac, char **av, char **env)
 	int		fdfile[2];
 	int		i;
 
-	i = 1;
-	if (!*env)
-		ft_error("Env does not exist");
 	if (ac >= 5)
-	{
-		fdfile[0] = open_file(av[1], O_RDONLY);
-		fdfile[1] = open_file(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC);
-		dup2(fdfile[0], STDIN_FILENO);
+	{	
+		if (!ft_strncmp(av[1], "here_doc", 9))
+		{
+			i = 2;
+			here_doc(av[2]);
+			fdfile[1] = open_file(av[ac - 1], O_WRONLY | O_CREAT | O_APPEND);
+		}
+		else
+		{
+			i = 1;
+			fdfile[0] = open_file(av[1], O_RDONLY);
+			fdfile[1] = open_file(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC);
+			dup2(fdfile[0], STDIN_FILENO);
+		}	
 		while (++i < ac - 2)
 			redirection(av[i], env);
 		dup2(fdfile[1], STDOUT_FILENO);
 		exec_cmd(av[i], env);
-		close(fdfile[0]);
-		close(fdfile[1]);
 	}
 	write(STDERR, "Invalid number of arguments.\n", 29);
 	return (EXIT_FAILURE);

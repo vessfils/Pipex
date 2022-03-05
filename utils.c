@@ -3,25 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vess <vess@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jcampagn <jcampagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 14:10:25 by jcampagn          #+#    #+#             */
-/*   Updated: 2022/03/04 18:05:05 by vess             ###   ########.fr       */
+/*   Updated: 2022/03/05 14:54:35 by jcampagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-/*
-static char	**ft_panic(char **arr, int len)
-{
-	while (--len >= 0)
-	{
-		free(arr[len]);
-	}
-	free(arr);
-	return (NULL);
-}
-*/
+
 char	**ft_panic(char **arr)
 {
 	int	i;

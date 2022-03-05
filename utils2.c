@@ -6,21 +6,21 @@
 /*   By: jcampagn <jcampagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 14:11:48 by jcampagn          #+#    #+#             */
-/*   Updated: 2022/03/03 14:14:40 by jcampagn         ###   ########.fr       */
+/*   Updated: 2022/03/05 15:08:23 by jcampagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-size_t	ft_strlen(const char *str)
+size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
 	i = 0;
-	while (str[i])
-	{
+	if (!s)
+		return (0);
+	while (s && s[i])
 		i++;
-	}
 	return (i);
 }
 
@@ -35,23 +35,6 @@ int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
 			return (((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]);
 		i++;
 	}
-	return (0);
-}
-
-char	*ft_strchr(const char *str, int c)
-{
-	int	i;
-
-	i = 0;
-	c = (unsigned char)c;
-	while (str[i])
-	{
-		if (str[i] == c)
-			return ((char *) str + i);
-		i++;
-	}
-	if (!c)
-		return ((char *) str + i);
 	return (0);
 }
 
